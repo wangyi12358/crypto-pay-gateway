@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== Auth 表 (better-auth) ====================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+}
+
+model Session {
+  id           String    @id @default(cuid())
+  expiresAt    DateTime
+  token        String    @unique
+  ipAddress    String?
+  userAgent    String?
+  userId       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                     String    @id @default(cuid())
+  accountId              String
+  providerId             String
+  userId                 String
+  accessToken            String?
+  refreshToken           String?
+  idToken                String?
+  accessTokenExpiresAt   DateTime?
+  refreshTokenExpiresAt  DateTime?
+  scope                  String?
+  password               String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  user                   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+}
+
+// ==================== 业务表 ====================
+
+model ApiKey {
+  id           String    @id @default(cuid())
+  pid          String    @unique
+  secretKey    String    @map("secret_key")
+  name         String    @default("")
+  ipWhitelist  String?   @map("ip_whitelist")
+  status       Int       @default(1)
+  callCount    Int       @default(0)  @map("call_count")
+  lastUsedAt   DateTime? @map("last_used_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt      @map("updated_at")
+
+  orders       Order[]
+
+  @@map("api_keys")
+}
+
+model Chain {
+  id          String       @id @default(cuid())
+  network     String       @unique
+  name        String
+  enabled     Boolean      @default(true)
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  tokens      ChainToken[]
+  rpcNodes    RpcNode[]
+  wallets     WalletAddress[]
+
+  @@map("chains")
+}
+
+model ChainToken {
+  id              String  @id @default(cuid())
+  chainId         String  @map("chain_id")
+  symbol          String
+  contractAddress String? @map("contract_address") @default("")
+  decimals        Int     @default(18)
+  minAmount       Float   @default(0) @map("min_amount")
+  enabled         Boolean @default(true)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  chain           Chain   @relation(fields: [chainId], references: [id])
+
+  @@unique([chainId, symbol, contractAddress])
+  @@map("chain_tokens")
+}
+
+model RpcNode {
+  id                String    @id @default(cuid())
+  chainId           String    @map("chain_id")
+  url               String
+  nodeType          String    @default("http") @map("node_type")
+  apiKey            String?   @map("api_key") @default("")
+  enabled           Boolean   @default(true)
+  lastHealthCheckAt DateTime? @map("last_health_check_at")
+  lastHealthStatus  Boolean   @default(true) @map("last_health_status")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  chain             Chain     @relation(fields: [chainId], references: [id])
+
+  @@map("rpc_nodes")
+}
+
+model WalletAddress {
+  id        String   @id @default(cuid())
+  chainId   String   @map("chain_id")
+  address   String
+  label     String   @default("")
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  chain     Chain    @relation(fields: [chainId], references: [id])
+
+  @@unique([chainId, address])
+  @@map("wallet_addresses")
+}
+
+model Order {
+  id                 String    @id @default(cuid())
+  tradeId            String    @unique @map("trade_id")
+  orderId            String    @unique @map("order_id")
+  parentTradeId      String?   @map("parent_trade_id") @default("")
+  amount             Float
+  currency           String    @default("CNY")
+  actualAmount       Float     @map("actual_amount")
+  receiveAddress     String    @map("receive_address")
+  token              String
+  network            String
+  status             Int       @default(1)
+  notifyUrl          String    @map("notify_url")
+  redirectUrl        String?   @map("redirect_url") @default("")
+  name               String    @default("")
+  blockTransactionId String?   @map("block_transaction_id") @default("")
+  callbackNum        Int       @default(0) @map("callback_num")
+  callbackConfirm    Int       @default(2) @map("callback_confirm")
+  paymentType        String?   @map("payment_type") @default("")
+  payProvider        String    @default("on_chain") @map("pay_provider")
+  apiKeyId           String?   @map("api_key_id")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt      @map("updated_at")
+
+  apiKey             ApiKey?   @relation(fields: [apiKeyId], references: [id])
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model TransactionLock {
+  id        String   @id @default(cuid())
+  network   String
+  address   String
+  token     String
+  amount    Float
+  tradeId   String   @map("trade_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([network, address, token, amount])
+  @@map("transaction_locks")
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @default("")
+  type      String   @default("string")
+  group     String   @default("")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("settings")
+}

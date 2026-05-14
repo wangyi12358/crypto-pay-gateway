@@ -9,9 +9,29 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroui/avatar": "^2.2.26",
+    "@heroui/button": "^2.2.32",
+    "@heroui/card": "^2.2.28",
+    "@heroui/dropdown": "^2.3.32",
+    "@heroui/navbar": "^2.2.30",
+    "@heroui/react": "^3.0.4",
+    "@hono/zod-validator": "^0.8.0",
+    "@prisma/client": "6",
+    "better-auth": "^1.6.11",
+    "clsx": "^2.1.1",
+    "decimal.js": "^10.6.0",
+    "framer-motion": "^12.38.0",
+    "hono": "^4.12.18",
+    "jotai": "^2.20.0",
+    "nanoid": "^5.1.11",
     "next": "16.2.6",
+    "next-themes": "^0.4.6",
+    "prisma": "6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "swr": "^2.4.1",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -28,6 +48,8 @@
     "unrs-resolver"
   ],
   "trustedDependencies": [
+    "@prisma/engines",
+    "prisma",
     "sharp",
     "unrs-resolver"
   ]
