@@ -1,4 +1,4 @@
-import { createHash } from "crypto"
+import { createHash } from 'node:crypto';
 
 /**
  * 与 EPusdt 兼容的签名算法
@@ -7,24 +7,24 @@ import { createHash } from "crypto"
  * 3. 末尾拼接 secretKey，做 MD5
  */
 export function generateSignature(
-  params: Record<string, unknown>,
-  secretKey: string
+	params: Record<string, unknown>,
+	secretKey: string,
 ): string {
-  const entries = Object.entries(params)
-    .filter(([k, v]) => k !== "signature" && v !== "" && v != null)
-    .sort(([a], [b]) => a.localeCompare(b))
+	const entries = Object.entries(params)
+		.filter(([k, v]) => k !== 'signature' && v !== '' && v != null)
+		.sort(([a], [b]) => a.localeCompare(b));
 
-  const sortedStr = entries.map(([k, v]) => `${k}=${v}`).join("&")
-  return createHash("md5")
-    .update(sortedStr + secretKey)
-    .digest("hex")
+	const sortedStr = entries.map(([k, v]) => `${k}=${v}`).join('&');
+	return createHash('md5')
+		.update(sortedStr + secretKey)
+		.digest('hex');
 }
 
 export function verifySignature(
-  params: Record<string, unknown>,
-  secretKey: string,
-  signature: string
+	params: Record<string, unknown>,
+	secretKey: string,
+	signature: string,
 ): boolean {
-  const expected = generateSignature(params, secretKey)
-  return expected === signature
+	const expected = generateSignature(params, secretKey);
+	return expected === signature;
 }

@@ -1,13 +1,13 @@
-import { z } from "zod"
+import { z } from 'zod';
 
 export const chainParamSchema = z.object({
-  network: z.string(),
-})
+	network: z.string(),
+});
 
 export const updateChainSchema = z.object({
-  name: z.string().optional(),
-  enabled: z.boolean().optional(),
-})
+	name: z.string().optional(),
+	enabled: z.boolean().optional(),
+});
 
-export type ChainParamInput = z.infer<typeof chainParamSchema>
-export type UpdateChainInput = z.infer<typeof updateChainSchema>
+export type ChainParamInput = z.infer<typeof chainParamSchema>;
+export type UpdateChainInput = z.infer<typeof updateChainSchema>;

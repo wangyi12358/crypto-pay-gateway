@@ -1,4 +1,4 @@
-import type { AppType } from "@/server/app"
-import { hc } from "hono/client"
+import { hc } from 'hono/client';
+import type { AppType } from '@/server/app';
 
-export const api = hc<AppType>("")
+export const api = hc<AppType>('');
