@@ -1,0 +1,43 @@
+{
+  "Metadata": {
+    "title": "Crypto Pay Gateway",
+    "description": "Open source multi-chain crypto payment gateway with direct-to-merchant settlement."
+  },
+  "Home": {
+    "titleLead": "Crypto",
+    "titleAccent": "Pay",
+    "titleTrail": "Gateway",
+    "tagline": "Open source multi-chain cryptocurrency payment gateway"
+  },
+  "HomeCta": {
+    "admin": "Admin console",
+    "apiDocs": "API docs"
+  },
+  "LocaleSwitcher": {
+    "aria": "Language",
+    "en": "English",
+    "zh": "简体中文"
+  },
+  "Admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "wallets": "Wallets",
+      "chains": "Chains",
+      "apiKeys": "API keys",
+      "settings": "Settings"
+    },
+    "brand": "Crypto Pay",
+    "profile": {
+      "settings": "Settings",
+      "logout": "Sign out"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "todayOrders": "Today's orders",
+      "todayRevenue": "Today's revenue",
+      "pending": "Pending payment",
+      "totalOrders": "Total orders"
+    }
+  }
+}

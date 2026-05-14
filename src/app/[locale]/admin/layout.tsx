@@ -8,16 +8,17 @@ import {
 	DropdownTrigger,
 } from '@heroui/dropdown';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/navbar';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { LocaleSwitcher } from '@/components/locale-switcher';
+import { Link, usePathname } from '@/i18n/navigation';
 
-const navItems = [
-	{ href: '/admin', label: '仪表盘' },
-	{ href: '/admin/orders', label: '订单' },
-	{ href: '/admin/wallets', label: '钱包' },
-	{ href: '/admin/chains', label: '链配置' },
-	{ href: '/admin/api-keys', label: 'API 密钥' },
-	{ href: '/admin/settings', label: '设置' },
+const navKeys = [
+	{ href: '/admin', key: 'dashboard' as const },
+	{ href: '/admin/orders', key: 'orders' as const },
+	{ href: '/admin/wallets', key: 'wallets' as const },
+	{ href: '/admin/chains', key: 'chains' as const },
+	{ href: '/admin/api-keys', key: 'apiKeys' as const },
+	{ href: '/admin/settings', key: 'settings' as const },
 ];
 
 export default function AdminLayout({
@@ -26,18 +27,21 @@ export default function AdminLayout({
 	children: React.ReactNode;
 }) {
 	const pathname = usePathname();
+	const tNav = useTranslations('Admin.nav');
+	const tBrand = useTranslations('Admin');
+	const tProfile = useTranslations('Admin.profile');
 
 	return (
 		<div className='min-h-screen'>
 			<Navbar isBordered>
 				<NavbarBrand>
 					<Link className='font-bold text-inherit' href='/admin'>
-						Crypto Pay
+						{tBrand('brand')}
 					</Link>
 				</NavbarBrand>
 
 				<NavbarContent className='hidden gap-4 sm:flex'>
-					{navItems.map((item) => (
+					{navKeys.map((item) => (
 						<NavbarItem isActive={pathname === item.href} key={item.href}>
 							<Link
 								className={
@@ -45,13 +49,14 @@ export default function AdminLayout({
 								}
 								href={item.href}
 							>
-								{item.label}
+								{tNav(item.key)}
 							</Link>
 						</NavbarItem>
 					))}
 				</NavbarContent>
 
-				<NavbarContent justify='end'>
+				<NavbarContent className='gap-2' justify='end'>
+					<LocaleSwitcher />
 					<Dropdown placement='bottom-end'>
 						<DropdownTrigger>
 							<Avatar
@@ -63,9 +68,9 @@ export default function AdminLayout({
 							/>
 						</DropdownTrigger>
 						<DropdownMenu aria-label='Profile Actions'>
-							<DropdownItem key='settings'>设置</DropdownItem>
+							<DropdownItem key='settings'>{tProfile('settings')}</DropdownItem>
 							<DropdownItem className='text-danger' key='logout'>
-								退出登录
+								{tProfile('logout')}
 							</DropdownItem>
 						</DropdownMenu>
 					</Dropdown>

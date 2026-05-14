@@ -1,21 +1,25 @@
 'use client';
 
 import { Button } from '@heroui/button';
-import Link from 'next/link';
+import NextLink from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export function HomeCta() {
+	const t = useTranslations('HomeCta');
+
 	return (
 		<div className='flex gap-4'>
 			<Button as={Link} color='primary' href='/admin' size='lg'>
-				管理后台
+				{t('admin')}
 			</Button>
 			<Button
-				as={Link}
+				as={NextLink}
 				href='/api/payments/v1/config'
 				size='lg'
 				variant='bordered'
 			>
-				API 文档
+				{t('apiDocs')}
 			</Button>
 		</div>
 	);

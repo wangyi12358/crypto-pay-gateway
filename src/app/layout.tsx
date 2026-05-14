@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { headers } from 'next/headers';
+import { hasLocale } from 'next-intl';
 import { Providers } from '@/components/providers/heroui';
 import { ThemeProvider } from '@/components/providers/theme';
+import { routing } from '@/i18n/routing';
 import './globals.css';
 
 const geistSans = Geist({
@@ -19,15 +22,21 @@ export const metadata: Metadata = {
 	description: 'Open Source Multi-chain Crypto Payment Gateway',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const headerList = await headers();
+	const headerLocale = headerList.get('x-next-intl-locale');
+	const lang = hasLocale(routing.locales, headerLocale)
+		? headerLocale
+		: routing.defaultLocale;
+
 	return (
 		<html
 			className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-			lang='en'
+			lang={lang}
 			suppressHydrationWarning
 		>
 			<body className='flex min-h-full flex-col'>

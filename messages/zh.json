@@ -1,0 +1,43 @@
+{
+  "Metadata": {
+    "title": "Crypto Pay Gateway",
+    "description": "开源多链加密货币支付网关，资金直达商户、非托管。"
+  },
+  "Home": {
+    "titleLead": "Crypto",
+    "titleAccent": "Pay",
+    "titleTrail": "Gateway",
+    "tagline": "开源多链加密货币支付网关"
+  },
+  "HomeCta": {
+    "admin": "管理后台",
+    "apiDocs": "API 文档"
+  },
+  "LocaleSwitcher": {
+    "aria": "语言",
+    "en": "English",
+    "zh": "简体中文"
+  },
+  "Admin": {
+    "nav": {
+      "dashboard": "仪表盘",
+      "orders": "订单",
+      "wallets": "钱包",
+      "chains": "链配置",
+      "apiKeys": "API 密钥",
+      "settings": "设置"
+    },
+    "brand": "Crypto Pay",
+    "profile": {
+      "settings": "设置",
+      "logout": "退出登录"
+    },
+    "dashboard": {
+      "title": "仪表盘",
+      "todayOrders": "今日订单",
+      "todayRevenue": "今日收入",
+      "pending": "待支付",
+      "totalOrders": "总订单"
+    }
+  }
+}
